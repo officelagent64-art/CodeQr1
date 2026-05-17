@@ -7,18 +7,19 @@ const PORT = process.env.PORT || 3000;
 
 const supabase = createClient(
   process.env.SUPABASE_URL,
-  process.env.SUPABASE_ANON_KEY
+  process.env.SUPABASE_ANON_KEY || process.env.SUPABASE_KEY
 );
 
-// Serve static files
-app.use(express.static(path.join(__dirname, 'public')));
-
-// Verification endpoint
-app.get('/verify', (req, res) => {
-  res.sendFile(path.join(__dirname, 'public', 'verify.html'));
+// Servir verify.html
+app.get('/', (req, res) => {
+  res.sendFile(path.join(__dirname, 'verify.html'));
 });
 
-// API endpoint to check certificate
+app.get('/verify', (req, res) => {
+  res.sendFile(path.join(__dirname, 'verify.html'));
+});
+
+// API de vérification
 app.get('/api/verify/:certId', async (req, res) => {
   const { certId } = req.params;
 
@@ -40,5 +41,5 @@ app.get('/api/verify/:certId', async (req, res) => {
 });
 
 app.listen(PORT, () => {
-  console.log(`Server running on port ${PORT}`);
+  console.log(`✅ Server running on port ${PORT}`);
 });
