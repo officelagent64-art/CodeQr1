@@ -25,7 +25,7 @@ app.get('/api/verify/:certId', async (req, res) => {
       .from('demandes_certificats')
       .select('*')
       .eq('cert_id', certId)
-      .single();
+      .maybeSingle();
 
     console.log('data:', data);
     console.log('error:', error);
