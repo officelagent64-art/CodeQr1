@@ -21,17 +21,29 @@ app.get('/verify', (req, res) => {
 app.get('/api/verify/:certId', async (req, res) => {
   const { certId } = req.params;
   try {
-    const { data, error } = await supabase
+    // 1. Cherche le certificat
+    const { data: cert, error: certError } = await supabase
       .from('demandes_certificats')
       .select('*')
       .eq('cert_id', certId)
       .maybeSingle();
 
-    console.log('data:', data);
-    console.log('error:', error);
+    if (certError || !cert) return res.json({ found: false });
 
-    if (error || !data) return res.json({ found: false, error: error?.message });
-    res.json({ found: true, data });
+    // 2. Cherche l'étudiant avec student_id
+    const { data: student, error: studentError } = await supabase
+      .from('student')
+      .select('nom, prenom, filiere, niveau')
+      .eq('id', cert.student_id)
+      .maybeSingle();
+
+    res.json({
+      found: true,
+      data: {
+        ...cert,
+        student: student || {}
+      }
+    });
   } catch (err) {
     res.json({ found: false, error: err.message });
   }
