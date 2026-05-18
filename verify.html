@@ -131,12 +131,14 @@
   });
 
   function showValid(d) {
+    const student = d.student || {};
     const dateCreated = d.created_at
       ? new Date(d.created_at).toLocaleDateString('en-GB', { day:'2-digit', month:'long', year:'numeric' })
       : 'N/A';
     const statusLabel = d.statut === 'in progress'
       ? `<span class="status-badge status-in-progress">⏳ In Progress</span>`
       : `<span class="status-badge status-validated">✅ Validated</span>`;
+
     document.getElementById('main').innerHTML = `
       <div class="result-card valid">
         <div class="result-header">
@@ -152,8 +154,20 @@
             <div class="cert-id-badge">${d.cert_id}</div>
           </div>
           <div class="info-item">
-            <label>Student ID</label>
-            <div class="value">${d.student_id}</div>
+            <label>Last Name</label>
+            <div class="value">${student.nom || 'N/A'}</div>
+          </div>
+          <div class="info-item">
+            <label>First Name</label>
+            <div class="value">${student.prenom || 'N/A'}</div>
+          </div>
+          <div class="info-item">
+            <label>Field of Study</label>
+            <div class="value">${student.filiere || 'N/A'}</div>
+          </div>
+          <div class="info-item">
+            <label>Level</label>
+            <div class="value">${student.niveau || 'N/A'}</div>
           </div>
           <div class="info-item">
             <label>Type</label>
