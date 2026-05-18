@@ -31,7 +31,7 @@ app.get('/api/verify/:certId', async (req, res) => {
 
     const { data: student } = await supabase
       .from('student')
-      .select('last_name, first_name, field, niveau')
+      .select('last_name, first_name, field, levele, specialty, year')
       .eq('student_id', cert.student_id)
       .maybeSingle();
 
