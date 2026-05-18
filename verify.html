@@ -8,56 +8,68 @@
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
     :root {
-      --bg: #0a0e1a; --surface: #111827; --border: #1e2d45;
-      --accent: #3b82f6; --accent2: #10b981; --danger: #ef4444;
-      --text: #f1f5f9; --muted: #64748b; --gold: #f59e0b;
+      --bg: #f8fafc;
+      --surface: #ffffff;
+      --border: #e2e8f0;
+      --accent: #3b82f6;
+      --accent2: #10b981;
+      --danger: #ef4444;
+      --text: #1e293b;
+      --muted: #94a3b8;
     }
     body {
-      background: var(--bg); color: var(--text);
-      font-family: 'DM Sans', sans-serif; min-height: 100vh;
-      display: flex; flex-direction: column; align-items: center;
-      justify-content: center; padding: 2rem 1rem; position: relative;
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'DM Sans', sans-serif;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 2rem 1rem;
     }
-    body::before {
-      content: ''; position: fixed; top: -200px; left: 50%;
-      transform: translateX(-50%); width: 800px; height: 800px;
-      background: radial-gradient(circle, rgba(59,130,246,0.08) 0%, transparent 70%);
-      pointer-events: none;
-    }
-    .container { width: 100%; max-width: 580px; position: relative; z-index: 1; }
+    .container { width: 100%; max-width: 580px; }
     .header { text-align: center; margin-bottom: 2.5rem; animation: fadeDown 0.6s ease both; }
     .university-logo {
       width: 60px; height: 60px;
       background: linear-gradient(135deg, var(--accent), #6366f1);
-      border-radius: 16px; display: flex; align-items: center;
-      justify-content: center; margin: 0 auto 1rem; font-size: 1.5rem;
-      box-shadow: 0 0 30px rgba(59,130,246,0.3);
+      border-radius: 16px;
+      display: flex; align-items: center; justify-content: center;
+      margin: 0 auto 1rem; font-size: 1.5rem;
+      box-shadow: 0 4px 20px rgba(59,130,246,0.3);
     }
-    .header h1 { font-family: 'Playfair Display', serif; font-size: 1.6rem; letter-spacing: -0.02em; }
-    .header p { color: var(--muted); font-size: 0.85rem; margin-top: 0.3rem; font-weight: 300; }
+    .header h1 {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.6rem;
+      color: var(--text);
+    }
+    .header p { color: var(--muted); font-size: 0.85rem; margin-top: 0.3rem; }
     .loading {
       text-align: center; padding: 3rem 2rem;
-      background: var(--surface); border: 1px solid var(--border);
-      border-radius: 20px; animation: fadeUp 0.4s ease both;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.06);
     }
     .spinner {
-      width: 36px; height: 36px; border: 2px solid var(--border);
-      border-top-color: var(--accent); border-radius: 50%;
-      animation: spin 0.7s linear infinite; margin: 0 auto 1rem;
+      width: 36px; height: 36px;
+      border: 2px solid var(--border);
+      border-top-color: var(--accent);
+      border-radius: 50%;
+      animation: spin 0.7s linear infinite;
+      margin: 0 auto 1rem;
     }
     .loading p { color: var(--muted); font-size: 0.9rem; }
     .result-card {
-      background: var(--surface); border: 1px solid var(--border);
-      border-radius: 20px; padding: 2rem; animation: fadeUp 0.4s ease both;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      padding: 2rem;
+      animation: fadeUp 0.4s ease both;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.06);
     }
-    .result-card.valid {
-      border-color: rgba(16,185,129,0.4);
-      background: linear-gradient(135deg, #0d1f1a 0%, var(--surface) 100%);
-    }
-    .result-card.invalid {
-      border-color: rgba(239,68,68,0.3);
-      background: linear-gradient(135deg, #1f0d0d 0%, var(--surface) 100%);
-    }
+    .result-card.valid { border-color: rgba(16,185,129,0.4); }
+    .result-card.invalid { border-color: rgba(239,68,68,0.3); }
     .result-header {
       display: flex; align-items: center; gap: 1rem;
       margin-bottom: 1.5rem; padding-bottom: 1.5rem;
@@ -68,30 +80,49 @@
       display: flex; align-items: center; justify-content: center;
       font-size: 1.4rem; flex-shrink: 0;
     }
-    .valid .status-icon { background: rgba(16,185,129,0.15); box-shadow: 0 0 20px rgba(16,185,129,0.2); }
-    .invalid .status-icon { background: rgba(239,68,68,0.15); box-shadow: 0 0 20px rgba(239,68,68,0.2); }
+    .valid .status-icon { background: rgba(16,185,129,0.1); }
+    .invalid .status-icon { background: rgba(239,68,68,0.1); }
     .status-text h2 { font-family: 'Playfair Display', serif; font-size: 1.2rem; }
     .valid .status-text h2 { color: var(--accent2); }
     .invalid .status-text h2 { color: var(--danger); }
     .status-text p { font-size: 0.82rem; color: var(--muted); margin-top: 0.2rem; }
     .info-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
     .info-item {
-      background: rgba(255,255,255,0.03); border: 1px solid var(--border);
-      border-radius: 12px; padding: 0.9rem 1rem;
+      background: #f8fafc;
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 0.9rem 1rem;
     }
     .info-item.full { grid-column: 1 / -1; }
-    .info-item label { font-size: 0.7rem; text-transform: uppercase; letter-spacing: 0.08em; color: var(--muted); font-weight: 500; }
-    .info-item .value { font-size: 0.92rem; color: var(--text); margin-top: 0.3rem; }
+    .info-item label {
+      font-size: 0.7rem;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--muted);
+      font-weight: 500;
+    }
+    .info-item .value {
+      font-size: 0.92rem;
+      color: var(--text);
+      margin-top: 0.3rem;
+      font-weight: 500;
+    }
     .cert-id-badge {
       font-family: monospace; font-size: 0.78rem;
-      background: rgba(59,130,246,0.1); color: var(--accent);
-      border: 1px solid rgba(59,130,246,0.2); border-radius: 8px;
-      padding: 0.25rem 0.5rem; display: inline-block; margin-top: 0.3rem;
+      background: rgba(59,130,246,0.08);
+      color: var(--accent);
+      border: 1px solid rgba(59,130,246,0.2);
+      border-radius: 8px;
+      padding: 0.25rem 0.5rem;
+      display: inline-block;
+      margin-top: 0.3rem;
     }
-    .status-badge { display: inline-block; padding: 0.2rem 0.7rem; border-radius: 20px; font-size: 0.78rem; font-weight: 500; margin-top: 0.3rem; }
-    .status-in-progress { background: rgba(245,158,11,0.15); color: var(--gold); border: 1px solid rgba(245,158,11,0.3); }
-    .status-validated { background: rgba(16,185,129,0.15); color: var(--accent2); border: 1px solid rgba(16,185,129,0.3); }
-    .footer { text-align: center; margin-top: 2rem; color: var(--muted); font-size: 0.78rem; animation: fadeUp 0.6s ease 0.3s both; }
+    .footer {
+      text-align: center;
+      margin-top: 2rem;
+      color: var(--muted);
+      font-size: 0.78rem;
+    }
     .footer span { color: var(--accent); }
     @keyframes fadeDown { from { opacity:0; transform:translateY(-20px); } to { opacity:1; transform:translateY(0); } }
     @keyframes fadeUp { from { opacity:0; transform:translateY(20px); } to { opacity:1; transform:translateY(0); } }
@@ -135,9 +166,6 @@
     const dateCreated = d.created_at
       ? new Date(d.created_at).toLocaleDateString('en-GB', { day:'2-digit', month:'long', year:'numeric' })
       : 'N/A';
-    const statusLabel = d.statut === 'in progress'
-      ? `<span class="status-badge status-in-progress">⏳ In Progress</span>`
-      : `<span class="status-badge status-validated">✅ Validated</span>`;
 
     document.getElementById('main').innerHTML = `
       <div class="result-card valid">
@@ -171,18 +199,17 @@
           </div>
           <div class="info-item">
             <label>Type</label>
-            <div class="value">${(d.type_demande || '').replace('_',' ')}</div>
-          </div>
-          <div class="info-item">
-            <label>Status</label>
-            <div class="value">${statusLabel}</div>
+            <div class="value">${(d.type_demande || '').replace('_', ' ')}</div>
           </div>
           <div class="info-item">
             <label>Date Issued</label>
             <div class="value">${dateCreated}</div>
           </div>
-          ${d.date_validation ? `<div class="info-item"><label>Validation Date</label><div class="value">${d.date_validation}</div></div>` : ''}
-          ${d.numero ? `<div class="info-item"><label>Reference No.</label><div class="value">${d.numero}</div></div>` : ''}
+          ${d.numero ? `
+          <div class="info-item">
+            <label>Reference No.</label>
+            <div class="value">${d.numero}</div>
+          </div>` : ''}
         </div>
       </div>`;
   }
