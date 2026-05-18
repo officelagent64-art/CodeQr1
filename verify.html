@@ -183,15 +183,15 @@
           </div>
           <div class="info-item">
             <label>Last Name</label>
-            <div class="value">${student.nom || 'N/A'}</div>
+            <div class="value">${student.last_name || 'N/A'}</div>
           </div>
           <div class="info-item">
             <label>First Name</label>
-            <div class="value">${student.prenom || 'N/A'}</div>
+            <div class="value">${student.first_name || 'N/A'}</div>
           </div>
           <div class="info-item">
             <label>Field of Study</label>
-            <div class="value">${student.filiere || 'N/A'}</div>
+            <div class="value">${student.field || 'N/A'}</div>
           </div>
           <div class="info-item">
             <label>Level</label>
@@ -205,6 +205,11 @@
             <label>Date Issued</label>
             <div class="value">${dateCreated}</div>
           </div>
+          ${d.date_validation ? `
+          <div class="info-item">
+            <label>Validation Date</label>
+            <div class="value">${d.date_validation}</div>
+          </div>` : ''}
           ${d.numero ? `
           <div class="info-item">
             <label>Reference No.</label>
