@@ -23,23 +23,17 @@ app.get('/api/verify/:certId', async (req, res) => {
   try {
     const { data, error } = await supabase
       .from('demandes_certificats')
-      .select(`
-        *,
-        student (
-          nom,
-          prenom,
-          filiere,
-          niveau,
-          email
-        )
-      `)
+      .select('*')
       .eq('cert_id', certId)
       .single();
 
-    if (error || !data) return res.json({ found: false });
+    console.log('data:', data);
+    console.log('error:', error);
+
+    if (error || !data) return res.json({ found: false, error: error?.message });
     res.json({ found: true, data });
   } catch (err) {
-    res.json({ found: false });
+    res.json({ found: false, error: err.message });
   }
 });
 
